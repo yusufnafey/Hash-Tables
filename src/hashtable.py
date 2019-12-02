@@ -51,7 +51,18 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        # if index = none, save value to none index, otherwise append
+        # print(f"self storage: {self.storage[index]}")
+        if self.storage[index] is None:
+            self.storage[index] = LinkedPair(key, value)
+        else:
+            current_node = self.storage[index]
+            while current_node.next:
+                current_node = current_node.next
+            current_node.next = LinkedPair(key, value)
+        
+        
 
 
 
