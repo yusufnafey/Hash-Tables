@@ -51,7 +51,25 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        # if index = none, save value to none index, otherwise append
+        # print(f"self storage: {self.storage[index]}")
+        if self.storage[index] is None:
+            self.storage[index] = LinkedPair(key, value)
+        else:
+            current_node = self.storage[index]
+            while current_node.next:
+                current_node = current_node.next
+            current_node.next = LinkedPair(key, value)
+    ''' LECTURE
+        index = self._hash_mod(key)
+
+        if self.storage[index] is not None:
+            print(f"WARNING: Overwriting data at {index}")
+        
+        self.storage[index] = LinkedPair(key, value)
+    '''
+        
 
 
 
@@ -63,8 +81,27 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        # if index = none, print error, otherwise set key's value to none
+        if self.storage[index] is None:
+            print("No key found")
+        else:
+            current_node = self.storage[index]
+            while current_node:
+                if current_node.key == key:
+                    current_node.value = None
+                    print(f"Value of key {key} has been removed.")
+                    return
+                current_node = current_node.next
+    ''' LECTURE
+        index = self._hash_mod(key)
 
+        if self.storage[index] is None:
+            print(f"WARNING: No key found")
+            return
+
+        self.storage[index] = None
+    '''
 
     def retrieve(self, key):
         '''
@@ -74,8 +111,30 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        # if index = none, print error, otherwise print node value
+        if self.storage[index] is None:
+            print("No key found")
+            return None
+        else:
+            current_node = self.storage[index]
+            while current_node:
+                if current_node.key == key:
+                    print(f"Key {key} has a value of {current_node.value}")
+                    return current_node.value
+                current_node = current_node.next
 
+    ''' LECTURE 
+        index = self._hash_mod(key)
+
+        if self.storage[index] is not None:
+            if self.storage[index].key == value:
+                return self.storage[index].value
+            else:
+                print(f"WARNING: Key doesn't match")
+                return None
+        else return None
+    '''
 
     def resize(self):
         '''
@@ -84,9 +143,24 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        self.capacity *= 2
+        new_storage = [None] * self.capacity
 
+        for i in range(self.capacity):
+            new_storage[i] = self.storage[i]
 
+        self.storage = new_storage
+        
+    ''' LECTURE
+        self.capacity *= 2
+        new_storage = [None] * self.capacity
+
+        for bucket_item in self.storage:
+            new_index = self._hash_mod(bucket_item.key)
+            new_storage[new_index] = LinkedPair(bucket_item.key, bucket_item.value)
+        
+        self.storage = new_storage
+    '''
 
 if __name__ == "__main__":
     ht = HashTable(2)
