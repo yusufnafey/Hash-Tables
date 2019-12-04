@@ -51,16 +51,31 @@ class HashTable:
 
         Fill this in.
         '''
+        # index = self._hash_mod(key)
+        # # if index = none, save value to none index, otherwise append
+        # # print(f"self storage: {self.storage[index]}")
+        # if self.storage[index] is None:
+        #     self.storage[index] = LinkedPair(key, value)
+        # else:
+        #     current_node = self.storage[index]
+        #     while current_node.next:
+        #         current_node = current_node.next
+        #     current_node.next = LinkedPair(key, value)
+
+        # ^ re-factored to this:
         index = self._hash_mod(key)
-        # if index = none, save value to none index, otherwise append
-        # print(f"self storage: {self.storage[index]}")
-        if self.storage[index] is None:
-            self.storage[index] = LinkedPair(key, value)
+        current_node = self.storage[index]
+        last_node = None
+
+        while current_node and current_node.key != key:
+            last_node = current_node
+            current_node = last_node.next
+        if current_node:
+            current_node.value = value
         else:
-            current_node = self.storage[index]
-            while current_node.next:
-                current_node = current_node.next
-            current_node.next = LinkedPair(key, value)
+            new_node = LinkedPair(key, value)
+            new_node.next = self.storage[index]
+            self.storage[index] = new_node
     ''' LECTURE
         index = self._hash_mod(key)
 
@@ -143,14 +158,21 @@ class HashTable:
 
         Fill this in.
         '''
-        self.capacity *= 2
-        new_storage = [None] * self.capacity
+        # self.capacity *= 2
+        # new_storage = [None] * self.capacity
+
+        # for i in self.storage:
+        #     new_index = self._hash_mod(i.key)
+        #     new_storage[new_index] = LinkedPair(i.key, i.value)
+
+        # self.storage = new_storage
+
+        # new_storage = [None] * self.capacity
+        # self.storage.extend(new_storage)
 
         for i in range(self.capacity):
-            new_storage[i] = self.storage[i]
+            self.storage.append(None)
 
-        self.storage = new_storage
-        
     ''' LECTURE
         self.capacity *= 2
         new_storage = [None] * self.capacity
